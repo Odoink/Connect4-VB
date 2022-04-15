@@ -1,0 +1,17 @@
+C:\Users\Sander\source\Connect4\Connect4\bin\Debug\net6.0-windows\Connect4.exe
+C:\Users\Sander\source\Connect4\Connect4\bin\Debug\net6.0-windows\Connect4.deps.json
+C:\Users\Sander\source\Connect4\Connect4\bin\Debug\net6.0-windows\Connect4.runtimeconfig.json
+C:\Users\Sander\source\Connect4\Connect4\bin\Debug\net6.0-windows\Connect4.dll
+C:\Users\Sander\source\Connect4\Connect4\bin\Debug\net6.0-windows\Connect4.pdb
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.vbproj.AssemblyReference.cache
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.Form1.resources
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.vbproj.GenerateResource.cache
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.AssemblyInfoInputs.cache
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.AssemblyInfo.vb
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.vbproj.CoreCompileInputs.cache
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.dll
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\refint\Connect4.dll
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.pdb
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\Connect4.genruntimeconfig.cache
+C:\Users\Sander\source\Connect4\Connect4\obj\Debug\net6.0-windows\ref\Connect4.dll

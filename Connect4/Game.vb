@@ -46,7 +46,7 @@
     Private Function IsDraw() As Boolean
         For x = 0 To LstLabels.Count - 1 Step 1
             For y = 0 To LstLabels(x).Count - 1 Step 1
-                If Equals(LstLabels(x)(y), Color.Gray) Then
+                If Equals(LstLabels(x)(y).BackColor, Color.Gray) Then
                     Return False
                 End If
             Next
@@ -54,40 +54,64 @@
         Return True
     End Function
 
-    Private Function CheckFor4InARow(selectedLabel As Label, col As Integer) As Boolean
-        'check Vertical'
-        For i As Integer = 0 To 2 Step 1
-            If Equals(LstLabels(col)(i).BackColor, colorCurrentPlayer) And Equals(LstLabels(col)(i + 1).BackColor, colorCurrentPlayer) And Equals(LstLabels(col)(i + 2).BackColor, colorCurrentPlayer) And Equals(LstLabels(col)(i + 3).BackColor, colorCurrentPlayer) Then
+    Private Function LabelExists(x As Integer, y As Integer) As Boolean
+        If x >= 0 And x < LstLabels.Count Then
+            If y >= 0 And y < LstLabels(x).Count Then
                 Return True
             End If
-        Next
-
-        'check horizontal'
-        For i As Integer = 0 To 3 Step 1
-            If Equals(LstLabels(i)(selectedLabel.Tag.Ycoor).BackColor, colorCurrentPlayer) And Equals(LstLabels(i + 1)(selectedLabel.Tag.Ycoor).BackColor, colorCurrentPlayer) And Equals(LstLabels(i + 2)(selectedLabel.Tag.Ycoor).BackColor, colorCurrentPlayer) And Equals(LstLabels(i + 3)(selectedLabel.Tag.Ycoor).BackColor, colorCurrentPlayer) Then
-                Return True
-            End If
-        Next
-
-        'check diagonal'
-        'top left bottom right'
-        For x As Integer = 0 To 3 Step 1
-            For y As Integer = 0 To 2 Step 1
-                If Equals(LstLabels(x)(y).BackColor, colorCurrentPlayer) And Equals(LstLabels(x + 1)(y + 1).BackColor, colorCurrentPlayer) And Equals(LstLabels(x + 2)(y + 2).BackColor, colorCurrentPlayer) And Equals(LstLabels(x + 3)(y + 3).BackColor, colorCurrentPlayer) Then
-                    Return True
-                End If
-            Next
-        Next
-        'top right bottom left'
-        For x As Integer = LstLabels.Count - 1 To 3 Step -1
-            For y As Integer = 0 To 2 Step 1
-                If Equals(LstLabels(x)(y).BackColor, colorCurrentPlayer) And Equals(LstLabels(x - 1)(y + 1).BackColor, colorCurrentPlayer) And Equals(LstLabels(x - 2)(y + 2).BackColor, colorCurrentPlayer) And Equals(LstLabels(x - 3)(y + 3).BackColor, colorCurrentPlayer) Then
-                    Return True
-                End If
-            Next
-        Next
+        End If
         Return False
+    End Function
 
+    'Check in every direction for 4 in a row'
+    Private Function CheckFor4InARow(selectedLabel As Label) As Boolean
+        Debug.WriteLine($"{colorCurrentPlayer}")
+        'Debug.WriteLine($"X: {selectedLabel.Tag.Xcoor}; Y: {selectedLabel.Tag.Ycoor}")'
+
+        Dim selectedX = selectedLabel.Tag.Xcoor
+        Dim selectedY = selectedLabel.Tag.Ycoor
+
+        'matching box count, bool isvalid, Direction (column, row), '
+        Dim directions = New List(Of Direction) From {
+            New Direction(1, True, {-1, 0}), 'up'
+            New Direction(1, True, {1, 0}), 'down'
+            New Direction(1, True, {0, -1}), 'left'
+            New Direction(1, True, {0, 1}), 'right'
+            New Direction(1, True, {-1, -1}), 'top left'
+            New Direction(1, True, {1, 1}), 'bottom right'
+            New Direction(1, True, {-1, 1}), 'bottom left'
+            New Direction(1, True, {1, -1})} 'top right'
+
+        'loop through 4 squares'
+        For i As Integer = 1 To 3 Step 1
+            'loop through all directions'
+            For j As Integer = 0 To directions.Count - 1 Step 1
+                If directions(j).isValid Then
+                    Dim x = selectedX + (directions(j).dir(0) * (i + 1))
+                    Dim y = selectedY + (directions(j).dir(1) * (i + 1))
+                    Debug.WriteLine($"X: {x}; Y: {y}")
+                    If LabelExists(x, y) Then
+                        If Equals(LstLabels(x)(y).BackColor, colorCurrentPlayer) Then
+                            directions(j).matchCount += 1
+                        Else
+                            directions(j).isValid = False
+                        End If
+                    Else
+                        directions(j).isValid = False
+                    End If
+                Else
+                    directions(j).isValid = False
+                End If
+            Next
+        Next
+
+        For i As Integer = 0 To 7 Step 2
+            If directions(i).matchCount + directions(i + 1).matchCount >= 3 Then
+                Return True
+            End If
+        Next
+
+        Return False
     End Function
 
     'Change current player'
@@ -120,12 +144,15 @@
         Dim LblselectedBox = GetFirstUnusedBox(sender)
         If LblselectedBox IsNot Nothing Then
             LblselectedBox.BackColor = colorCurrentPlayer
-            If CheckFor4InARow(LblselectedBox, sender.Tag) Or IsDraw() Then
+            If CheckFor4InARow(LblselectedBox) Then
                 MessageBox.Show($"{colorCurrentPlayer} heeft gewonnen!")
+                Break()
+            ElseIf IsDraw() Then
+                MessageBox.Show("Gelijkspel!")
                 Break()
             End If
             SwitchPlayer()
-            End If
+        End If
     End Sub
 
     'Create buttons to place fiche'
